@@ -1,11 +1,12 @@
 import json, argparse
 import os
+from datetime import datetime
 
 file_path = "tasks.json"
 with open(file_path, "a") as file:
     if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
         data = {"tasks": []}
-        
+        json.dump(file)
 
 parser = argparse.ArgumentParser(description="This is a CLI app for tracking task.")
 parser.add_argument("-a", "--add", type=str, help="To add new task.")
@@ -21,4 +22,16 @@ parser.add_argument("-lp", "--list-in-progress", action="store_true", help="To l
 args = parser.parse_args()
 
 if args.add:
+    tasks = json.load(file)["tasks"]
+    count = len(tasks) + 1
+    data = {
+        "id": count,
+        "description": args.add,
+        "status": "todo",
+        "createdAt": datetime.now(),
+        "updatedAt": datetime.now()
+    }
+    tasks.append(data)
+    quit()
+    
     
