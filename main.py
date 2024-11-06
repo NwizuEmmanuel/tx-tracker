@@ -3,10 +3,10 @@ import os
 from datetime import datetime
 
 file_path = "tasks.json"
-with open(file_path, "a") as file:
+with open(file_path, "a") as f:
     if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
         data = {"tasks": []}
-        json.dump(data, file, indent=4)
+        json.dump(data, f, indent=4)
 
 parser = argparse.ArgumentParser(description="This is a CLI app for tracking task.")
 parser.add_argument("-a", "--add", type=str, help="To add new task.")
@@ -23,10 +23,10 @@ args = parser.parse_args()
 
 def app():
     if args.add:
-        with open(file_path, "r") as file:
-            tasks = json.load(file)["tasks"]
+        with open(file_path, "r") as f:
+            tasks = json.load(f)
 
-        count = len(tasks) + 1
+        count = len(tasks["tasks"]) + 1
         data = {
             "id": count,
             "description": args.add,
@@ -34,10 +34,9 @@ def app():
             "createdAt": str(datetime.now()),
             "updatedAt": str(datetime.now()),
         }
-        tasks.append(data)
-        with open(file_path, "a") as file:
-            json.dump(tasks, file)
-        quit()
+        tasks["tasks"].append(data)
+        with open(file_path, "w") as f:
+            json.dump(tasks, f, indent=4)
     
 if __name__ == "__main__":
     app() 
