@@ -6,7 +6,7 @@ file_path = "tasks.json"
 with open(file_path, "a") as file:
     if os.path.exists(file_path) and os.path.getsize(file_path) == 0:
         data = {"tasks": []}
-        json.dump(file)
+        json.dump(data, file, indent=4)
 
 parser = argparse.ArgumentParser(description="This is a CLI app for tracking task.")
 parser.add_argument("-a", "--add", type=str, help="To add new task.")
@@ -21,17 +21,23 @@ parser.add_argument("-lp", "--list-in-progress", action="store_true", help="To l
 
 args = parser.parse_args()
 
-if args.add:
-    tasks = json.load(file)["tasks"]
-    count = len(tasks) + 1
-    data = {
-        "id": count,
-        "description": args.add,
-        "status": "todo",
-        "createdAt": datetime.now(),
-        "updatedAt": datetime.now()
-    }
-    tasks.append(data)
-    quit()
+def app():
+    if args.add:
+        with open(file_path, "r") as file:
+            tasks = json.load(file)["tasks"]
+
+        count = len(tasks) + 1
+        data = {
+            "id": count,
+            "description": args.add,
+            "status": "todo",
+            "createdAt": str(datetime.now()),
+            "updatedAt": str(datetime.now()),
+        }
+        tasks.append(data)
+        with open(file_path, "a") as file:
+            json.dump(tasks, file)
+        quit()
     
-    
+if __name__ == "__main__":
+    app() 

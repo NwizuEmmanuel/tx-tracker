@@ -1,0 +1,2 @@
+setuptools==75.3.0
+-e git+https://github.com/NwizuEmmanuel/tx-tracker.git@6fa9893ca773a1c63b02599707cf12cd347de096#egg=tx_tracker

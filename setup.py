@@ -4,15 +4,12 @@ setup(
     name="tx-tracker",
     version="1.0",
     packages=find_packages(),
-    install_requires=[],
+    author="Onyeka Nwizu",
+    py_modules=["main"],
+    description="A task tracker CLI app.",
     entry_points={
-        'console-scripts':[
-            "tx-tracker: main",
-        ]
+        'console_scripts': [
+            'tx-tracker = main:app',
+        ],
     },
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-    ]
 )
