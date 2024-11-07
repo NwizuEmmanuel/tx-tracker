@@ -1,2 +1,4 @@
+prettytable==3.12.0
 setuptools==75.3.0
--e git+https://github.com/NwizuEmmanuel/tx-tracker.git@6fa9893ca773a1c63b02599707cf12cd347de096#egg=tx_tracker
+-e git+https://github.com/NwizuEmmanuel/tx-tracker.git@2ec2e44263227d3a02bdbb076aca40cea27daed7#egg=tx_tracker
+wcwidth==0.2.13

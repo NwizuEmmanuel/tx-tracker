@@ -1,6 +1,7 @@
 import json, argparse
 import os
 from datetime import datetime
+from prettytable import PrettyTable
 
 file_path = "tasks.json"
 with open(file_path, "a") as f:
@@ -37,6 +38,22 @@ def app():
         tasks["tasks"].append(data)
         with open(file_path, "w") as f:
             json.dump(tasks, f, indent=4)
+            
+    if args.list:
+        with open(file_path, "r") as f:
+            tasks = json.load(f)["tasks"]
+        
+        table = PrettyTable()
+        table.field_names = ["id","desc","status","createdAt","updatedAt"]
+        for task in tasks:
+            table.add_row([task["id"],task["description"],task["status"],task["createdAt"],task["updatedAt"]])
+        print(table)
+    
+    if args.update:
+        with open(file_path,"r") as f:
+            tasks = json.load(f)["tasks"]
+        
+        
     
 if __name__ == "__main__":
     app() 
