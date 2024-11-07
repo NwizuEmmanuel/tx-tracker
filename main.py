@@ -71,6 +71,29 @@ def app():
         with open(file_path, "w") as f:
             json.dump(tasks, f, indent=4)
         print("Task deleted.")
+        
+    if args.mark_in_progress:
+        with open(file_path, "r") as f:
+            tasks = json.load(f)
+        for task in tasks["tasks"]:
+            if task["id"] == args.mark_in_progress:
+                task["status"] = "in_progress"
+                task["updatedAt"] = str(datetime.now())
+        with open(file_path, "w") as f:
+            json.dump(tasks, f, indent=4)
+        print("Task marked in progress.")
+        
+    if args.mark_done:
+        with open(file_path, "r") as f:
+            tasks = json.load(f)
+            
+        for task in tasks["tasks"]:
+            if task["id"] == args.mark_done:
+                task["status"] = "done"
+                task["updatedAt"] = str(datetime.now())
+        with open(file_path, "w") as f:
+            json.dump(tasks, f, indent=4)
+        print("Task marked done.")
     
 if __name__ == "__main__":
     app() 

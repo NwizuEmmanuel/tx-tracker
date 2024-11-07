@@ -3,7 +3,7 @@
         {
             "id": 1,
             "description": "This is a todo 1",
-            "status": "todo",
+            "status": "done",
             "createdAt": "2024-11-07 09:20:46.530636",
             "updatedAt": "2024-11-07 09:20:46.530684"
         }
