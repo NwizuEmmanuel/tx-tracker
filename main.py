@@ -17,8 +17,6 @@ def save_task(data):
     with open("tasks.json",'w',encoding="utf-8") as f:
         json.dump(data, f, indent=4)
 
-args = parser.parse_args()
-
 def print_table(tasks):
     table = PrettyTable()
     table.field_names = ["id","description","status","createdAt","updatedAt"]
@@ -32,7 +30,7 @@ def print_table(tasks):
             ])
     print(table)
 
-def add_task():
+def add_task(args):
     tasks = load_tasks()
     count = len(tasks["tasks"]) + 1
     data = {
@@ -46,7 +44,7 @@ def add_task():
     save_task(tasks)
     print("Task added successfully.")
 
-def update_task():
+def update_task(args):
     tasks = load_tasks() 
     for task in tasks["tasks"]:
         if task["id"] == int(args.update[0]):
@@ -54,7 +52,7 @@ def update_task():
     save_task(tasks)
     print("Task is updated")
 
-def delete_task():
+def delete_task(args):
     tasks = load_tasks()
     for task in tasks["tasks"]:
         if task["id"] == args.delete:
@@ -66,7 +64,7 @@ def list_tasks():
     tasks = load_tasks()["tasks"]
     print_table(tasks)
 
-def mark_in_progress():
+def mark_in_progress(args):
     tasks = load_tasks()
     for task in tasks["tasks"]:
         if task["id"] == args.mark_in_progress:
@@ -76,7 +74,7 @@ def mark_in_progress():
     print("Task marked in progress.")
 
 
-def mark_done():
+def mark_done(args):
     tasks = load_tasks()
     for task in tasks["tasks"]:
         if task["id"] == args.mark_done:
@@ -85,12 +83,12 @@ def mark_done():
     save_task(tasks)
     print("Task marked done.")
 
-def list_tasks_done():
+def list_with_status(status=None):
     tasks = load_tasks()
-    done_tasks = [task for task in tasks["tasks"] if task["status"] == "done"]
-    print_table(done_tasks)     
-    
-if __name__ == "__main__":
+    done_tasks = [task for task in tasks["tasks"] if task["status"] == status]
+    print_table(done_tasks)
+
+def app():
     parser = argparse.ArgumentParser(description="This is a CLI app for tracking task.")
     parser.add_argument("-a", "--add", type=str, help="To add new task.")
     parser.add_argument("-u", "--update", nargs="+", help="To update existing task.")
@@ -101,18 +99,26 @@ if __name__ == "__main__":
     parser.add_argument("-ld", "--list-done", action="store_true", help="To list done task only.")
     parser.add_argument("-lt", "--list-todo", action="store_true", help="To list todo task only.")
     parser.add_argument("-lp", "--list-in-progress", action="store_true", help="To list in-progress task only.")
+    args = parser.parse_args()
 
     if args.add:
-        add_task()   
+        add_task(args=args)   
     elif args.list:
         list_tasks()
     elif args.update:
-        update_task()
+        update_task(args=args)
     elif args.delete:
-        delete_task() 
+        delete_task(args=args) 
     elif args.mark_in_progress:
-        mark_in_progress()  
+        mark_in_progress(args=args)  
     elif args.mark_done:
-        mark_done()
+        mark_done(args=args)
     elif args.list_done:
-        list_tasks_done() 
+        list_with_status("done")
+    elif args.list_todo:
+        list_with_status("todo")
+    elif args.list_in_progress:
+        list_with_status("in_progress")
+    
+if __name__ == "__main__":
+    app()
