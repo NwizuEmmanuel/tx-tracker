@@ -88,6 +88,17 @@ def list_with_status(status=None):
     done_tasks = [task for task in tasks["tasks"] if task["status"] == status]
     print_table(done_tasks)
 
+
+def delete_all_tasks():
+    tasks = load_tasks()
+    result = input("Are you sure? (y/[n])")
+    if str.lower(result) == "y":
+        tasks["tasks"].clear()
+        save_task(tasks)
+        print("All tasks is deleted.")
+    else:
+        print("Since you aren't sure all task was not delete.")
+
 def app():
     parser = argparse.ArgumentParser(description="This is a CLI app for tracking task.")
     parser.add_argument("-a", "--add", type=str, help="To add new task.")
@@ -99,6 +110,7 @@ def app():
     parser.add_argument("-ld", "--list-done", action="store_true", help="To list done task only.")
     parser.add_argument("-lt", "--list-todo", action="store_true", help="To list todo task only.")
     parser.add_argument("-lp", "--list-in-progress", action="store_true", help="To list in-progress task only.")
+    parser.add_argument("-da", "--delete-all", action="store_true", help="To delete all tasks.")
     args = parser.parse_args()
 
     if args.add:
@@ -119,6 +131,8 @@ def app():
         list_with_status("todo")
     elif args.list_in_progress:
         list_with_status("in_progress")
+    elif args.delete_all:
+        delete_all_tasks()
     
 if __name__ == "__main__":
     app()
