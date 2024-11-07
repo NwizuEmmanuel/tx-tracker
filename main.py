@@ -11,7 +11,7 @@ with open(file_path, "a") as f:
 
 parser = argparse.ArgumentParser(description="This is a CLI app for tracking task.")
 parser.add_argument("-a", "--add", type=str, help="To add new task.")
-parser.add_argument("-u", "--update", type=int, help="To update existing task.")
+parser.add_argument("-u", "--update", nargs="+", help="To update existing task.")
 parser.add_argument("-d", "--delete", type=int, help="To delete a task.")
 parser.add_argument("-mp", "--mark-in-progress", type=int, help="To mark a task in progress.")
 parser.add_argument("-md", "--mark-done", type=int, help="To mark a task done.")
@@ -50,10 +50,15 @@ def app():
         print(table)
     
     if args.update:
-        with open(file_path,"r") as f:
-            tasks = json.load(f)["tasks"]
+        with open(file_path,'r') as f:
+            tasks = json.load(f)
         
-        
+        for task in tasks["tasks"]:
+            if task["id"] == int(args.update[0]):
+                task["description"] = args.update[1]
+        with open(file_path, 'w') as f:
+            json.dump(tasks, f, indent=4)
+        print("Task is updated")
     
 if __name__ == "__main__":
     app() 
