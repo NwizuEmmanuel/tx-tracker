@@ -59,6 +59,18 @@ def app():
         with open(file_path, 'w') as f:
             json.dump(tasks, f, indent=4)
         print("Task is updated")
+        
+    if args.delete:
+        with open(file_path, "r") as f:
+            tasks = json.load(f)
+        
+        for task in tasks["tasks"]:
+            if task["id"] == args.delete:
+                tasks["tasks"].remove(task)
+                
+        with open(file_path, "w") as f:
+            json.dump(tasks, f, indent=4)
+        print("Task deleted.")
     
 if __name__ == "__main__":
     app() 
